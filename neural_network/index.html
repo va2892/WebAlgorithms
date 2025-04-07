@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css" />
+    <title>Neural Network</title>
+</head>
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.14.0/dist/tf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
+    <script src="script.js"></script>
+    <h1>Welcome to Neural Network's page</h1>
+    <div id="start-button">
+        <button onclick="clearField()">Очистить поле</button>
+    </div>
+    <div id="drawing">
+        <canvas id="field"></canvas>
+    </div>
+    <div id="start-button">
+        <button onclick="recognizeNumber()">Распознать цифру</button>
+    </div>
+</body>
+</html>
