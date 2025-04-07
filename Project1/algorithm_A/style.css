@@ -1,0 +1,46 @@
+h1 {
+    text-align: center;
+    font-family: sans-serif;
+    color:rgb(90, 0, 173)
+}
+
+label {
+    text-align: center;
+    display: block;
+    font-weight: bold;
+}
+
+#input-space {
+    text-align: center;
+}
+
+#grid {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(var(--size), 40px);
+    grid-template-rows: repeat(var(--size), 40px);
+    gap: 1px;
+    justify-content: center;
+}
+
+.grid-cell {
+    width: 40px;
+    height: 40px;
+    background-color: lightgray;
+    border: 1px solid black;
+}
+
+#start-button {
+    margin-top: 10px;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+canvas {
+    border: 1px solid black;
+}
+
+#drawing {
+    display: flex;
+    justify-content: center;
+}

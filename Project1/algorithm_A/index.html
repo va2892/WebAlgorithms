@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="style.css" />
+        <title>Algorithm A*</title>
+    </head>
+
+    <body>
+        <script src="script.js"></script>
+        <h1>Welcome to A* Algorithm's page</h1>
+        <label>Enter the size of the field</label>
+        <div id="input-space">
+            <input id="input-size" name="numbers" type="number" min="1" />
+            <button onclick="generateGrid()">Сгенерировать поле</button>
+        </div>
+        <div id="start-button">
+            <button onclick="runAStar()">Запустить алгоритм</button>
+        </div>
+        <div id="grid"></div>
+    </body>
+</html>
