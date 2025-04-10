@@ -11,6 +11,13 @@
     font-weight: 600;
 }
 
+.subtitle {
+    font-size: 1.2rem;
+    color: #666;
+    font-weight: 300;
+}
+
+
 :root {
     --primary-color: #6c5ce7;
     --secondary-color: #a29bfe;
