@@ -1,23 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>All Algorithms</title>
-        <link rel="stylesheet" href="style.css" />
-    </head>
-    <body>
-        <h1>This is the page for all algorithms</h1>
-        <h2>If u wanna see A* Algorithm click
-            <a href="algorithm_A/index.html" target="_blank">this</a></h2>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Algorithm Visualizer</title>
+    <link rel="stylesheet" href="style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Roboto:wght@300;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Algorithms</h1>
+            <p class="subtitle">Home page</p>
+        </header>
+        
+        <main class="grid-container">
+            <a href="algorithm_A/index.html" class="algorithm-card" id="astar" target="blank">
+                <div class="card-content">
+                    <h3>A* Algorithm</h3>
+                    <p>Optimized pathfinding</p>
+                </div>
+            </a>
+            
+            <a href="neural_network/index.html" class="algorithm-card" id="neural" target="blank">
+                <div class="card-content">
+                    <h3>Neural Network</h3>
+                    <p>Digit recognition</p>
+                </div>
+            </a>
+            
+            <a href="clustering/index.html" class="algorithm-card" id="clustering" target="blank">
+                <div class="card-content">
+                    <h3>Clustering</h3>
+                    <p>Cluster search algorithm</p>
+                </div>
+            </a>
+            
+            <a href="genetic_algorithm/index.html" class="algorithm-card" id="genetic" target="blank">
+                <div class="card-content">
+                    <h3>Genetic Algorithm</h3>
+                    <p>Generating the best individual</p>
+                </div>
+            </a>
 
-        <h2>If u wanna see Neural Network click
-            <a href="neural_network/index.html" target="_blank">this</a></h2>
+            <a href="The Ant algorithm/index.html" class="algorithm-card" id="ant" target="blank">
+                <div class="card-content">
+                    <h3>Genetic Algorithm</h3>
+                    <p>Analysis of ant behavior</p>
+                </div>
+            </a>
 
-        <h2>If u wanna see clustering click
-            <a href="clustering/index.html" target="_blank">this</a></h2>
-
-        <h2>If u wanna see genetic algorithm click
-            <a href="genetic_algorithm/index.html" target="_blank">this</a></h2>
-    </body>
+            <a href="Decision tree/Index.html" class="algorithm-card" id="tree" target="blank">
+                <div class="card-content">
+                    <h3>Decision Tree</h3>
+                    <p>???</p>
+                </div>
+            </a>
+        </main>
+        
+        <footer class="footer">
+            <p>Algorithm Visualizer | Three person project</p>
+        </footer>
+    </div>
+</body>
 </html>

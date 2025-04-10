@@ -1,46 +1,140 @@
-h1 {
+.header {
     text-align: center;
-    font-family: sans-serif;
-    color:rgb(90, 0, 173)
+    margin-bottom: 3rem;
 }
 
-label {
-    text-align: center;
-    display: block;
-    font-weight: bold;
+.header h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+    font-weight: 600;
 }
 
-#input-space {
-    text-align: center;
+:root {
+    --primary-color: #6c5ce7;
+    --secondary-color: #a29bfe;
+    --dark-color: #2d3436;
+    --light-color: #f5f6fa;
+    --accent-color: #00cec9;
+    --card-shadow: 0 10px 20px rgba(0,0,0,0.1);
 }
 
-#grid {
-    margin-top: 20px;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: white;
+    color: var(--dark-color);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.grid-container {
     display: grid;
-    grid-template-columns: repeat(var(--size), 40px);
-    grid-template-rows: repeat(var(--size), 40px);
-    gap: 1px;
-    justify-content: center;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
 }
 
-.grid-cell {
-    width: 40px;
-    height: 40px;
-    background-color: lightgray;
-    border: 1px solid black;
-}
-
-#start-button {
-    margin-top: 10px;
-    text-align: center;
-    margin-bottom: 10px;
-}
-
-canvas {
-    border: 1px solid black;
-}
-
-#drawing {
+.algorithm-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+    height: 200px;
     display: flex;
-    justify-content: center;
+    align-items: flex-end;
+    position: relative;
+}
+
+.algorithm-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+}
+
+.algorithm-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background: var(--primary-color);
+}
+
+.card-content {
+    padding: 1.5rem;
+    width: 100%;
+    background: linear-gradient(to top, rgba(255,255,255,0.9), rgba(255,255,255,0.7));
+}
+
+.algorithm-card h3 {
+    font-family: 'Montserrat', sans-serif;
+    margin-bottom: 0.5rem;
+    color: var(--dark-color);
+}
+
+.algorithm-card p {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+#astar {
+    background: linear-gradient(135deg, #a869f0, #b8b1f0, #5f159c);
+}
+
+#neural {
+    background: linear-gradient(135deg, #00b894, #7cdfcb, #09916a);
+}
+
+#clustering {
+    background: linear-gradient(135deg, #4cf84c, #a5c983, #287e06);
+}
+
+#genetic {
+    background: linear-gradient(135deg, #0984e3, #a4cceb, #5782ad);
+}
+
+#ant {
+    background: linear-gradient(135deg, #02b995, #04c8d6, #035f5e)
+}
+
+#tree  {
+    background: linear-gradient(135deg, #fa6262, #d87d7d, #8a0606)
+}
+
+.footer {
+    text-align: center;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid #eee;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    .header h1 {
+        font-size: 2rem;
+    }
+    
+    .subtitle {
+        font-size: 1rem;
+    }
+    
+    .grid-container {
+        grid-template-columns: 1fr;
+    }
 }
