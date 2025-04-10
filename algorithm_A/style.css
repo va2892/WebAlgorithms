@@ -1,46 +1,171 @@
-h1 {
-    text-align: center;
-    font-family: sans-serif;
-    color:rgb(90, 0, 173)
+:root {
+    --primary-color: #6c5ce7;
+    --secondary-color: #a29bfe;
+    --dark-color: #2d3436;
+    --light-color: #f5f6fa;
+    --accent-color: #00cec9;
+    --wall-color: #2d3436;
+    --start-color: #00b894;
+    --end-color: #d63031;
+    --path-color: #0984e3;
+    --visited-color: #74b9ff;
+    --cell-size: 40px;
 }
 
-label {
-    text-align: center;
-    display: block;
-    font-weight: bold;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-#input-space {
-    text-align: center;
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f9f9f9;
+    color: var(--dark-color);
+    line-height: 1.6;
 }
 
-#grid {
-    margin-top: 20px;
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.header h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    color: #666666;
+    font-weight: 300;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+
+.controls {
+    width: 100%;
+    max-width: 600px;
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+}
+
+.input-group label {
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--dark-color);
+}
+
+.input-group input {
+    padding: 0.5rem;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+
+.button-group {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.generate-btn {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.run-btn {
+    background-color: var(--start-color);
+    color: white;
+    flex: 2;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+}
+
+.wall {
+    color: var(--wall-color);
+    font-weight: 500;
+}
+
+.grid-container {
+    margin: 1rem 0;
     display: grid;
-    grid-template-columns: repeat(var(--size), 40px);
-    grid-template-rows: repeat(var(--size), 40px);
-    gap: 1px;
+    grid-template-columns: repeat(var(--size), var(--cell-size));
+    grid-template-rows: repeat(var(--size), var(--cell-size));
+    gap: 2px;
     justify-content: center;
 }
 
 .grid-cell {
-    width: 40px;
-    height: 40px;
-    background-color: lightgray;
-    border: 1px solid black;
+    width: var(--cell-size);
+    height: var(--cell-size);
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    transition: all 0.2s ease;
+    cursor: pointer;
 }
 
-#start-button {
-    margin-top: 10px;
-    text-align: center;
-    margin-bottom: 10px;
+.grid-cell:hover {
+    transform: scale(1.05);
 }
 
-canvas {
-    border: 1px solid black;
+.grid-cell.wall {
+    background-color: var(--wall-color);
+    border-color: var(--wall-color);
 }
 
-#drawing {
-    display: flex;
-    justify-content: center;
+.grid-cell.start {
+    background-color: var(--start-color);
+    border-color: var(--start-color);
+}
+
+.grid-cell.end {
+    background-color: var(--end-color);
+    border-color: var(--end-color);
+}
+
+.grid-cell.checked {
+    background-color: #b3e0ff; 
+    animation: checkedAnimation 0.5s ease-out;
+}
+
+@keyframes checkedAnimation {
+    0% { transform: scale(0.9); background-color: white; }
+    100% { transform: scale(1); background-color: #b3e0ff; }
 }

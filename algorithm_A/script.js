@@ -12,9 +12,19 @@ class Node {
 }
 
 function generateGrid() {
+
+    startCell = null;
+    endCell = null;
+
     let size = parseInt(document.getElementById("input-size").value);
+
+    if (size <= 0) {
+        alert("Please enter a positive number");
+        return;
+    }
+
     document.documentElement.style.setProperty("--size", size);
-    container = document.getElementById("grid");
+    let container = document.getElementById("grid");
     container.innerHTML = "";
 
     for (let x = 0; x < size; x++) {
@@ -32,6 +42,38 @@ function generateGrid() {
             if (Math.random() < 0.2) {
                 cell.classList.add("wall");
                 cell.style.backgroundColor = "black";
+            }
+        }
+    }
+
+    resetPath();
+}
+
+
+function selectCell(cell) {
+
+    if (startCell && endCell) {
+        startCell.style.backgroundColor = "white";
+        endCell.style.backgroundColor = "white";
+        startCell = null;
+        endCell = null;
+    }
+
+    if (!startCell) {
+        startCell = cell;
+        cell.style.backgroundColor = "lightgreen";
+    } else if (!endCell && cell !== startCell) {
+        endCell = cell;
+        cell.style.backgroundColor = "lightgreen";
+    }
+}
+
+function resetPath() {
+    let size = parseInt(document.getElementById("input-size").value);
+    for (let x = 0; x < size; x++) {
+        for (let y = 0; y < size; y++) {
+            if (grid[x][y].style.backgroundColor === "green") {
+                grid[x][y].style.backgroundColor = ""
             }
         }
     }
@@ -104,6 +146,7 @@ function findPath(startNode, goalNode, grid, size) {
         explored.push(node);
 
         let newReachable = [];
+
         for (let adj of getAdjacentNodes(node, grid, size)) {
             let isInExplored = false;
             for (let e of explored) {
@@ -139,49 +182,17 @@ function findPath(startNode, goalNode, grid, size) {
     return null;
 }
 
-function selectCell(cell) {
-
-    resetPath();
-
-    if (startCell && endCell) {
-        startCell.style.backgroundColor = "lightgray";
-        endCell.style.backgroundColor = "lightgray";
-        startCell = null;
-        endCell = null;
-    }
-
-    if (!startCell) {
-        startCell = cell;
-        cell.style.backgroundColor = "lightgreen";
-    } else if (!endCell && cell !== startCell) {
-        endCell = cell;
-        cell.style.backgroundColor = "lightgreen";
-    }
-}
-
-function resetPath() {
-    let size = parseInt(document.getElementById("input-size").value);
-    for (let x = 0; x < size; x++) {
-        for (let y = 0; y < size; y++) {
-            if (grid[x][y].style.backgroundColor === "green") {
-                grid[x][y].style.backgroundColor = ""
-            }
-        }
-    }
-}
-
 function runAStar() {
-    let size = parseInt(document.getElementById("input-size").value);
+
     if (!startCell || !endCell) {
-        alert("Пожалуйста, выберите начальную и конечную клетки.");
+        alert("Please select both start and end points");
         return;
     }
+
+    let size = parseInt(document.getElementById("input-size").value);
     let start = new Node(startCell.dataset.row, startCell.dataset.col);
     let end = new Node(endCell.dataset.row, endCell.dataset.col);
-    console.log("Начальная клетка: ", start);
-    console.log("Конечная клетка: ", end);
     let path = findPath(start, end, grid, size);
-    console.log(path);
 
     if (path) {
         let delay = 100;

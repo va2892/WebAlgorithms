@@ -1,23 +1,36 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="stylesheet" href="style.css" />
-        <title>Algorithm A*</title>
-    </head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A* Pathfinding Visualizer</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Roboto:wght@300;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Visualizer For A* Algorithm</h1>
+            <p class="subtitle">Visualize pathfinding algorithm</p>
+        </header>
 
-    <body>
-        <script src="script.js"></script>
-        <h1>Welcome to A* Algorithm's page</h1>
-        <label>Enter the size of the field</label>
-        <div id="input-space">
-            <input id="input-size" name="numbers" type="number" min="1" />
-            <button onclick="generateGrid()">Сгенерировать поле</button>
-        </div>
-        <div id="start-button">
-            <button onclick="runAStar()">Запустить алгоритм</button>
-        </div>
-        <div id="grid"></div>
-    </body>
+        <main class="content">
+            <div class="controls">
+                <div class="input-group">
+                    <label for="input-size">Grid Size</label>
+                    <input id="input-size" type="number" min="1">
+                </div>
+                
+                <div class="button-group">
+                    <button class="btn generate-btn" onclick="generateGrid()">Generate Grid</button>
+                    <button class="btn run-btn" onclick="runAStar()">Run A*</button>
+                </div>
+            </div>
+
+            <div id="grid" class="grid-container"></div>
+        </main>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
 </html>
