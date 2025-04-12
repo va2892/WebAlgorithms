@@ -1,0 +1,90 @@
+body {
+    font-family: Arial, sans-serif;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    line-height: 1.6;
+}
+
+h1, h2 {
+    color: #2c3e50;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.panel {
+    flex: 1;
+    min-width: 300px;
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+textarea {
+    width: 100%;
+    min-height: 150px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: monospace;
+}
+
+button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    margin: 10px 0;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+.tree-container {
+    overflow: auto;
+    max-height: 600px;
+    border: 1px solid #ddd;
+    padding: 15px;
+    background: white;
+    border-radius: 4px;
+}
+
+.tree-node {
+    margin: 5px 0;
+    padding: 5px;
+    border-left: 3px solid #3498db;
+}
+
+.tree-leaf {
+    margin: 5px 0;
+    padding: 5px;
+    border-left: 3px solid #2ecc71;
+    background-color: #f0fff0;
+}
+
+.decision-path {
+    margin: 15px 0;
+    padding: 10px;
+    background-color: #fffaf0;
+    border-left: 3px solid #e67e22;
+}
+
+.path-step {
+    margin: 5px 0;
+    padding: 3px;
+}
+
+.example {
+    font-size: 12px;
+    color: #7f8c8d;
+    margin-top: 5px;
+}

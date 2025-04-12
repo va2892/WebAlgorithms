@@ -4,25 +4,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Дерево решений</title>
-    <link rel="stylesheet" href="Style.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <h1>Дерево решений</h1>
+    
     <div class="container">
-        <h1>Дерево решений</h1>
-        <textarea id="trainingData" placeholder="Введите обучающую выборку в формате CSV"></textarea>
-        <button id="buildTree">Построить дерево</button>
-
-        <h2>Дерево решений</h2>
-        <div id="treeOutput"></div>
-
-        <h2>Ввод данных для принятия решения</h2>
-        <textarea id="inputData" placeholder="Введите данные в формате CSV"></textarea>
-        <button id="makeDecision">Принять решение</button>
-
-        <h2>Результат решения</h2>
-        <div id="decisionOutput"></div>
+        <div class="panel">
+            <h2>1. Обучающая выборка (CSV)</h2>
+            <textarea id="trainingData" placeholder="Введите обучающие данные в формате CSV. Первая строка - заголовки, последний столбец - целевая переменная.">
+Возраст,Доход,Студент,Кредитный_рейтинг,Купил
+<=30,Высокий,Нет,Хороший,Нет
+<=30,Высокий,Нет,Отличный,Нет
+31-40,Высокий,Нет,Хороший,Да
+>40,Средний,Нет,Хороший,Да
+>40,Низкий,Да,Хороший,Да
+>40,Низкий,Да,Отличный,Нет
+31-40,Низкий,Да,Отличный,Да
+<=30,Средний,Нет,Хороший,Нет
+<=30,Низкий,Да,Хороший,Да
+>40,Средний,Да,Хороший,Да
+<=30,Средний,Да,Отличный,Да
+31-40,Средний,Нет,Отличный,Да
+31-40,Высокий,Да,Хороший,Да
+>40,Средний,Нет,Отличный,Нет
+</textarea>
+            <p class="example">Пример: Возраст,Доход,Студент,Кредитный_рейтинг,Купил<br>
+            <=30,Высокий,Нет,Хороший,Нет</p>
+            <button id="buildTree">Построить дерево</button>
+        </div>
+        
+        <div class="panel">
+            <h2>2. Визуализация дерева</h2>
+            <div id="treeVisualization" class="tree-container">
+                Дерево будет отображено здесь после построения.
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="panel">
+            <h2>3. Прогнозирование (CSV)</h2>
+            <textarea id="predictionData" placeholder="Введите данные для прогнозирования в формате CSV (те же признаки, кроме целевой переменной)">
+Возраст,Доход,Студент,Кредитный_рейтинг
+>40,Средний,Да,Хороший
+<=30,Высокий,Нет,Отличный
+31-40,Низкий,Нет,Хороший
+</textarea>
+            <button id="predict">Прогнозировать</button>
+        </div>
+        
+        <div class="panel">
+            <h2>4. Результаты прогнозирования</h2>
+            <div id="predictionResults">
+                Результаты прогнозирования будут отображены здесь.
+            </div>
+        </div>
     </div>
 
-    <script src="Script.js"></script>
+    <script src="decision-tree.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>

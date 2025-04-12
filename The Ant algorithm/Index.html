@@ -3,15 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Алгоритм Комивояжера</title>
-    <link rel="stylesheet" href="Styles.css">
+    <title>Муравьиный алгоритм для задачи коммивояжёра</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Алгоритм Комивояжера</h1>
-    <canvas id="canvas" width="800" height="600" style="border:1px solid black;"></canvas>
-    <br>
-    <button id="startButton">Запустить Алгоритм</button>
+    <div class="container">
+        <h1>Муравьиный алгоритм для задачи коммивояжёра</h1>
+        
+        <div class="controls">
+            <div class="control-group">
+                <button id="clear">Очистить</button>
+                <button id="run">Запустить алгоритм</button>
+                <button id="random">10 случайных точек</button>
+            </div>
+            
+            <div class="control-group params">
+                <div>
+                    <label for="antCount">Количество муравьев:</label>
+                    <input type="number" id="antCount" min="1" value="10">
+                </div>
+                <div>
+                    <label for="iterations">Итераций:</label>
+                    <input type="number" id="iterations" min="1" value="50">
+                </div>
+                <div>
+                    <label for="alpha">Альфа (феромоны):</label>
+                    <input type="number" id="alpha" min="0" step="0.1" value="1.0">
+                </div>
+                <div>
+                    <label for="beta">Бета (расстояние):</label>
+                    <input type="number" id="beta" min="0" step="0.1" value="2.0">
+                </div>
+                <div>
+                    <label for="evaporation">Испарение:</label>
+                    <input type="number" id="evaporation" min="0" max="1" step="0.01" value="0.5">
+                </div>
+            </div>
+        </div>
+        
+        <div class="canvas-container">
+            <canvas id="canvas"></canvas>
+            <div class="instructions">Кликните на поле, чтобы добавить город</div>
+        </div>
+        
+        <div class="info">
+            <div id="bestPathLength">Лучший путь: не найден</div>
+            <div id="currentIteration">Итерация: 0/0</div>
+            <div id="cityCount">Городов: 0</div>
+        </div>
+    </div>
 
-    <script src="Script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
