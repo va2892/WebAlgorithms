@@ -3,12 +3,8 @@
     --secondary-color: #a29bfe;
     --dark-color: #2d3436;
     --light-color: #f5f6fa;
-    --accent-color: #00cec9;
-    --wall-color: #2d3436;
+    --btn-color: #08e2e2;
     --start-color: #00b894;
-    --end-color: #d63031;
-    --path-color: #0984e3;
-    --visited-color: #74b9ff;
     --cell-size: 40px;
 }
 
@@ -117,9 +113,10 @@ body {
     box-shadow: 0 5px 10px rgba(0,0,0,0.1);
 }
 
-.wall {
-    color: var(--wall-color);
-    font-weight: 500;
+.instructions ul {
+    display: block;
+    margin-left: 1rem;
+    margin-top: 0.5rem;
 }
 
 .grid-container {
@@ -143,29 +140,4 @@ body {
 
 .grid-cell:hover {
     transform: scale(1.05);
-}
-
-.grid-cell.wall {
-    background-color: var(--wall-color);
-    border-color: var(--wall-color);
-}
-
-.grid-cell.start {
-    background-color: var(--start-color);
-    border-color: var(--start-color);
-}
-
-.grid-cell.end {
-    background-color: var(--end-color);
-    border-color: var(--end-color);
-}
-
-.grid-cell.checked {
-    background-color: #b3e0ff; 
-    animation: checkedAnimation 0.5s ease-out;
-}
-
-@keyframes checkedAnimation {
-    0% { transform: scale(0.9); background-color: white; }
-    100% { transform: scale(1); background-color: #b3e0ff; }
 }
