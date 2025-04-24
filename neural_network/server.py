@@ -1,6 +1,7 @@
 import numpy as np
 from flask import Flask, request, jsonify
 from tensorflow.keras.datasets import mnist  # type: ignore
+from tensorflow.keras.preprocessing.image import ImageDataGenerator # type:ignore
 from flask_cors import CORS
 import os
 
@@ -13,7 +14,30 @@ def prepare_data():
     images = x_train.reshape(60000, 28*28) / 255.0
     labels = y_train
 
-    ind = np.arange(60000)
+    datagen = ImageDataGenerator(
+            rotation_range = 13,      
+            width_shift_range = 0.13,
+            height_shift_range = 0.13, 
+            zoom_range = 0.13,        
+            shear_range = 0.13,       
+            fill_mode='nearest'    
+        )
+
+    augmented_images = []
+    augmented_labels = []
+
+    for x, y in zip(images, labels):
+        x_reshaped = x.reshape(28, 28, 1)
+        x_aug = datagen.random_transform(x_reshaped)  
+        x_aug = x_aug.reshape(-1)
+        x_aug = np.clip(x_aug, 0.0, 1.0)
+        augmented_images.append(x_aug)
+        augmented_labels.append(y)
+
+    images = np.concatenate([images, augmented_images], axis=0)
+    labels = np.concatenate([labels, augmented_labels], axis=0)
+
+    ind = np.arange(len(images))
     np.random.shuffle(ind) 
     images = images[ind]
     labels = labels[ind]

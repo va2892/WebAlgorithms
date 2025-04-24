@@ -210,7 +210,7 @@ class DigitRecognizer {
                 <div class="probability-fill" style="width: ${probPercent}%"></div>
             </div>
             <div class="probability-value">${probPercent}%</div>
-        `;
+`;
         container.appendChild(item);
     });
 }
