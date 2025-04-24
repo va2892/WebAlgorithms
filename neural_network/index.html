@@ -1,24 +1,69 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css" />
-    <title>Neural Network</title>
+    <title>Распознавание цифр</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="static/style.css">
 </head>
 <body>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.14.0/dist/tf.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
-    <script src="script.js"></script>
-    <h1>Welcome to Neural Network's page</h1>
-    <div id="start-button">
-        <button onclick="clearField()">Очистить поле</button>
+    <div class="app-container">
+        <header class="app-header">
+            <h1>Распознавание цифр</h1>
+            <p class="subtitle">Нарисуйте цифру от 0 до 9</p>
+        </header>
+
+        <main class="app-content">
+            <div class="drawing-area">
+                <div class="canvas-wrapper">
+                    <canvas id="drawingCanvas" width="50" height="50"></canvas>
+                    <div class="canvas-grid"></div>
+                </div>
+                
+                <div class="drawing-controls">
+                    <div class="brush-control">
+                        <label for="brushSize">Размер кисти:</label>
+                        <div class="slider-container">
+                            <input type="range" id="brushSize" min="10" max="30" value="20">
+                            <span id="brushSizeValue">20</span>
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button id="clearBtn" class="btn outline">
+                            Очистить
+                        </button>
+                        <button id="recognizeBtn" class="btn primary">
+                            Распознать
+                        </button>
+                        <button id="trainBtn" class="btn secondary">
+                            Обучить модель
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="results-area">
+                <div class="result-card">
+                    <h2>Результат</h2>
+                    <div id="prediction" class="prediction-display">—</div>
+                    <div class="confidence">
+                        <div class="confidence-meter">
+                            <div class="confidence-fill"></div>
+                        </div>
+                        <span id="confidenceValue">0%</span>
+                    </div>
+                </div>
+
+                <div class="probabilities-card">
+                    <h2>Вероятности</h2>
+                    <div id="probabilities" class="probabilities-container"></div>
+                </div>
+            </div>
+        </main>
     </div>
-    <div id="drawing">
-        <canvas id="field"></canvas>
-    </div>
-    <div id="start-button">
-        <button onclick="recognizeNumber()">Распознать цифру</button>
-    </div>
+
+    <script src="static/script.js"></script>
 </body>
 </html>
