@@ -10,6 +10,33 @@ CORS(app)
 
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
 
+def center_image(image):
+    image_2d = image.reshape(28, 28)
+    y_indices, x_indices = np.indices(image_2d.shape)
+
+    total = np.sum(image_2d)
+
+    center_x = np.sum(x_indices * image_2d) / total
+    center_y = np.sum(y_indices * image_2d) / total
+    
+    shift_x = np.round(14 - center_x).astype(int)
+    shift_y = np.round(14 - center_y).astype(int)
+    
+    centered = np.roll(image_2d, shift_y, axis=0)
+    centered = np.roll(centered, shift_x, axis=1)
+    
+    if shift_y > 0:
+        centered[:shift_y, :] = 0
+    elif shift_y < 0:
+        centered[shift_y:, :] = 0
+    
+    if shift_x > 0:
+        centered[:, :shift_x] = 0
+    elif shift_x < 0:
+        centered[:, shift_x:] = 0
+    
+    return centered.reshape(784)
+
 def prepare_data():
     images = x_train.reshape(60000, 28*28) / 255.0
     labels = y_train
@@ -183,7 +210,9 @@ def recognize():
             return jsonify({"error": "Model is not trained"}), 500
 
         pixels = np.array(data['image'], dtype=np.float32)
-        img_array = pixels.reshape(1, 784) 
+
+        centered_image = center_image(pixels)
+        img_array = centered_image.reshape(1, 784) 
 
         layer_1 = relu(np.dot(img_array, nn.weights_0_1))
         layer_2 = relu(np.dot(layer_1, nn.weights_1_2))
