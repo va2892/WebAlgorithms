@@ -13,36 +13,27 @@ class DigitRecognizer {
         
         this.canvas.width = displaySize;
         this.canvas.height = displaySize;
-        
-        // Очищаем canvas белым цветом
-        this.ctx.fillStyle = 'white';
-        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-        
-        // Настраиваем контекст рисования
         this.ctx.fillStyle = 'black';
         this.ctx.lineCap = 'round';
         this.ctx.lineJoin = 'round';
-        this.brushSize = displaySize / this.logicalWidth * 1.5; // Физический размер кисти
+        this.brushSize = displaySize / this.logicalWidth * 1.5; 
         this.ctx.lineWidth = this.brushSize;
         this.lastX = 0;
         this.lastY = 0;
         this.isDrawing = false;
-        this.scaleFactor = displaySize / this.logicalWidth; // Коэффициент масштабирования
+        this.scaleFactor = displaySize / this.logicalWidth; 
     }
 
     setupEventListeners() {
-        // Desktop events
         this.canvas.addEventListener('mousedown', this.startDrawing.bind(this));
         this.canvas.addEventListener('mousemove', this.draw.bind(this));
         this.canvas.addEventListener('mouseup', this.stopDrawing.bind(this));
         this.canvas.addEventListener('mouseout', this.stopDrawing.bind(this));
 
-        // Touch events
         this.canvas.addEventListener('touchstart', this.handleTouchStart.bind(this));
         this.canvas.addEventListener('touchmove', this.handleTouchMove.bind(this));
         this.canvas.addEventListener('touchend', this.stopDrawing.bind(this));
 
-        // Controls
         document.getElementById('brushSize').addEventListener('input', (e) => {
             this.brushSize = parseInt(e.target.value);
             document.getElementById('brushSizeValue').textContent = this.brushSize;
@@ -130,9 +121,7 @@ class DigitRecognizer {
         }
         return false;
     }
-
-    // ???????????
-    
+ 
 
     async recognizeDigit() {
         try {
@@ -148,7 +137,6 @@ class DigitRecognizer {
             const pixels = [];
             
             for (let i = 0; i < imgData.length; i += 4) {
-
                 const value = imgData[i];
                 pixels.push((255 - value) / 255);
             }
