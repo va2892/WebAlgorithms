@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кластеризация точек</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <nav class="algorithm-nav">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-home">Home</a>
+            <div class="nav-algorithms">
+                <a href="../algorithm_A/index.html" class="nav-link">A*</a>
+                <a href="../clustering/index.html" class="nav-link">Сlustering</a>
+                <a href="../Decision tree/index.html" class="nav-link">Decision Tree</a>
+                <a href="../genetic_algorithm/index.html" class="nav-link">Genetic</a>
+                <a href="../neural_network/index.html" class="nav-link">Neural Network</a>
+                <a href="../The Ant algorithm/index.html" class="nav-link">Ant Algorithm</a>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <h1>Кластеризация точек</h1>
+
+        <div class="controls">
+            <button id="clearButton">Очистить</button>
+            <button id="clusterButton">Запустить кластеризацию</button>
+            <button id="randomButton">10 случайных точек</button>
+            
+            <div class="control-group">
+                <label for="clusterCount">Количество кластеров:</label>
+                <input type="number" id="clusterCount" min="1" max="10" value="3">
+            </div>
+            
+            <div class="control-group">
+                <label for="algorithm">Алгоритм:</label>
+                <select id="algorithm">
+                    <option value="kmeans">K-средних</option>
+                    <option value="dbscan">DBSCAN</option>
+                    <option value="hierarchical">Иерархическая</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="canvas-container">
+            <canvas id="canvas"></canvas>
+            <div class="instructions">Кликните на поле, чтобы добавить точку</div>
+        </div>
+
+        <div class="info">
+            <div id="pointCount">Точек: 0</div>
+            <div id="clusterInfo">Кластеров: 0</div>
+            <div id="iterationInfo">Итераций: 0</div>
+        </div>
+
+        <div id="statusMessage" class="status-message"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
