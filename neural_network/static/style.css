@@ -1,9 +1,5 @@
 :root {
     --primary: #4361ee;
-    --primary-dark: #3a56d4;
-    --secondary: #f72585;
-    --background: #f8f9fa;
-    --surface: #ffffff;
     --text-primary: #212529;
     --text-secondary: #6c757d;
     --border: #e9ecef;
@@ -17,10 +13,61 @@
 }
 
 body {
-    font-family: 'Inter', sans-serif;
-    background-color: var(--background);
+    font-family: 'Roboto', sans-serif;
+    background-color: #f8f9fa;
     color: var(--text-primary);
     line-height: 1.5;
+}
+
+.algorithm-nav {
+    background-color: #6c5ce7;
+    padding: 1rem 0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    overflow-x: auto;
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-home {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.2rem;
+    font-family: 'Montserrat', sans-serif;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.nav-home:hover {
+    background-color: rgba(255,255,255,0.2);
+}
+
+.nav-algorithms {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.nav-link:hover {
+    background-color: rgba(255,255,255,0.2);
 }
 
 .app-container {
@@ -36,15 +83,17 @@ body {
 }
 
 .app-header h1 {
+    font-family: 'Montserrat', sans-serif;
     font-size: 2.25rem;
     font-weight: 600;
-    color: var(--primary);
+    color: #6c5ce7;
     margin-bottom: 0.5rem;
 }
 
 .subtitle {
     color: var(--text-secondary);
-    font-size: 1.125rem;
+    font-size: 1.1rem;
+    font-weight: 300;
 }
 
 .app-content {
@@ -66,7 +115,7 @@ body {
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    background-color: var(--surface);
+    background-color: #ffffff;
 }
 
 canvas {
@@ -166,7 +215,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
 }
 
 .btn.primary:hover {
-    background-color: var(--primary-dark);
+    background-color: #3a56d4;
 }
 
 .btn.outline {
@@ -200,7 +249,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
 }
 
 .result-card, .probabilities-card {
-    background-color: var(--surface);
+    background-color: #ffffff;
     border-radius: 12px;
     padding: 1.5rem;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
@@ -208,13 +257,14 @@ input[type="range"]::-webkit-slider-thumb:hover {
 
 .result-card h2, .probabilities-card h2 {
     font-size: 1.25rem;
+    font-weight: 500;
     margin-bottom: 1.5rem;
     color: var(--text-primary);
 }
 
 .prediction-display {
     font-size: 6rem;
-    font-weight: 600;
+    font-weight: 500;
     text-align: center;
     color: var(--primary);
     margin: 1.5rem 0;

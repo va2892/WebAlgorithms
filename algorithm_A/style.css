@@ -1,10 +1,5 @@
-:root {
+ :root {
     --primary-color: #6c5ce7;
-    --secondary-color: #a29bfe;
-    --dark-color: #2d3436;
-    --light-color: #f5f6fa;
-    --btn-color: #08e2e2;
-    --start-color: #00b894;
     --cell-size: 40px;
 }
 
@@ -17,8 +12,59 @@
 body {
     font-family: 'Roboto', sans-serif;
     background-color: #f9f9f9;
-    color: var(--dark-color);
+    color: #2d3436;
     line-height: 1.6;
+}
+
+.algorithm-nav {
+    background-color: var(--primary-color);
+    padding: 1rem 0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    overflow-x: auto;
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-home {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.2rem;
+    font-family: 'Montserrat', sans-serif;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.nav-home:hover {
+    background-color: rgba(255,255,255,0.2);
+}
+
+.nav-algorithms {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.nav-link:hover {
+    background-color: rgba(255,255,255,0.2);
 }
 
 .container {
@@ -70,7 +116,7 @@ body {
 .input-group label {
     margin-bottom: 0.5rem;
     font-weight: 500;
-    color: var(--dark-color);
+    color: #2d3436;
 }
 
 .input-group input {
@@ -103,7 +149,7 @@ body {
 }
 
 .run-btn {
-    background-color: var(--start-color);
+    background-color: #00b894;
     color: white;
     flex: 2;
 }

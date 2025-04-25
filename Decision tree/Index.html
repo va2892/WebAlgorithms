@@ -4,31 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Дерево решений</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Roboto:wght@300;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
+    <nav class="algorithm-nav">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-home">Home</a>
+            <div class="nav-algorithms">
+                <a href="../algorithm_A/index.html" class="nav-link">A*</a>
+                <a href="../clustering/index.html" class="nav-link">Сlustering</a>
+                <a href="../Decision tree/index.html" class="nav-link">Decision Tree</a>
+                <a href="../genetic_algorithm/index.html" class="nav-link">Genetic</a>
+                <a href="../neural_network/index.html" class="nav-link">Neural Network</a>
+                <a href="../The Ant algorithm/index.html" class="nav-link">Ant Algorithm</a>
+            </div>
+        </div>
+    </nav>
+
     <h1>Дерево решений</h1>
     
     <div class="container">
         <div class="panel">
             <h2>1. Обучающая выборка (CSV)</h2>
             <textarea id="trainingData" placeholder="Введите обучающие данные в формате CSV. Первая строка - заголовки, последний столбец - целевая переменная.">
-Возраст,Доход,Студент,Кредитный_рейтинг,Купил
-<=30,Высокий,Нет,Хороший,Нет
-<=30,Высокий,Нет,Отличный,Нет
-31-40,Высокий,Нет,Хороший,Да
->40,Средний,Нет,Хороший,Да
->40,Низкий,Да,Хороший,Да
->40,Низкий,Да,Отличный,Нет
-31-40,Низкий,Да,Отличный,Да
-<=30,Средний,Нет,Хороший,Нет
-<=30,Низкий,Да,Хороший,Да
->40,Средний,Да,Хороший,Да
-<=30,Средний,Да,Отличный,Да
-31-40,Средний,Нет,Отличный,Да
-31-40,Высокий,Да,Хороший,Да
->40,Средний,Нет,Отличный,Нет
-</textarea>
+                Возраст,Доход,Студент,Кредитный_рейтинг,Купил
+                <=30,Высокий,Нет,Хороший,Нет
+                <=30,Высокий,Нет,Отличный,Нет
+                31-40,Высокий,Нет,Хороший,Да
+                >40,Средний,Нет,Хороший,Да
+                >40,Низкий,Да,Хороший,Да
+                >40,Низкий,Да,Отличный,Нет
+                31-40,Низкий,Да,Отличный,Да
+                <=30,Средний,Нет,Хороший,Нет
+                <=30,Низкий,Да,Хороший,Да
+                >40,Средний,Да,Хороший,Да
+                <=30,Средний,Да,Отличный,Да
+                31-40,Средний,Нет,Отличный,Да
+                31-40,Высокий,Да,Хороший,Да
+                >40,Средний,Нет,Отличный,Нет
+                </textarea>
             <p class="example">Пример: Возраст,Доход,Студент,Кредитный_рейтинг,Купил<br>
             <=30,Высокий,Нет,Хороший,Нет</p>
             <button id="buildTree">Построить дерево</button>
@@ -46,11 +62,11 @@
         <div class="panel">
             <h2>3. Прогнозирование (CSV)</h2>
             <textarea id="predictionData" placeholder="Введите данные для прогнозирования в формате CSV (те же признаки, кроме целевой переменной)">
-Возраст,Доход,Студент,Кредитный_рейтинг
->40,Средний,Да,Хороший
-<=30,Высокий,Нет,Отличный
-31-40,Низкий,Нет,Хороший
-</textarea>
+                Возраст,Доход,Студент,Кредитный_рейтинг
+                >40,Средний,Да,Хороший
+                <=30,Высокий,Нет,Отличный
+                31-40,Низкий,Нет,Хороший
+                </textarea>
             <button id="predict">Прогнозировать</button>
         </div>
         
