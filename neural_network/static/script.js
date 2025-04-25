@@ -141,9 +141,6 @@ class DigitRecognizer {
                 pixels.push((255 - value) / 255);
             }
 
-            console.log('Pixel vector:', pixels);
-            console.log('Vector length:', pixels.length);
-
             const response = await fetch('http://localhost:5000/recognize', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
