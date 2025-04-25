@@ -1,387 +1,273 @@
-class AntColonyOptimizer {
-    constructor(cities, params = {}) {
-        this.cities = cities;
-        this.antCount = params.antCount || 10;
-        this.iterations = params.iterations || 50;
-        this.alpha = params.alpha || 1;
-        this.beta = params.beta || 2;
-        this.evaporation = params.evaporation || 0.5;
-        this.q = params.q || 100;
-        
-        this.pheromone = [];
-        this.distances = [];
-        this.bestPath = [];
-        this.bestPathLength = Infinity;
-        
-        this.initialize();
+// Инициализация canvas
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+// Параметры алгоритма
+let points = [];
+let bestPath = [];
+let bestLength = Infinity;
+let pheromones = [];
+let currentIteration = 0;
+let isRunning = false;
+
+// Фиксированные параметры алгоритма
+const ANT_COUNT = 10;
+const ALPHA = 1;   // Влияние феромонов
+const BETA = 2;     // Влияние расстояния
+const EVAPORATION = 0.5; // Испарение феромонов
+const Q = 100;      // Количество феромонов
+
+// Инициализация элементов управления
+const addPointBtn = document.getElementById('addPoint');
+const clearBtn = document.getElementById('clear');
+const randomBtn = document.getElementById('random');
+const runBtn = document.getElementById('run');
+const iterationsInput = document.getElementById('iterations');
+const bestLengthSpan = document.getElementById('bestLength');
+const bestPathSpan = document.getElementById('bestPath');
+const currentIterationSpan = document.getElementById('currentIteration');
+
+// Обработчики событий
+canvas.addEventListener('click', (e) => {
+    if (isRunning) return;
+    
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    points.push({x, y});
+    drawPoints();
+});
+
+addPointBtn.addEventListener('click', () => {
+    if (isRunning) return;
+    canvas.style.cursor = 'crosshair';
+});
+
+clearBtn.addEventListener('click', () => {
+    if (isRunning) return;
+    points = [];
+    bestPath = [];
+    bestLength = Infinity;
+    currentIteration = 0;
+    updateResults();
+    drawPoints();
+});
+
+randomBtn.addEventListener('click', () => {
+    if (isRunning) return;
+    
+    points = [];
+    const pointCount = Math.floor(Math.random() * 10) + 5; // 5-14 точек
+    
+    for (let i = 0; i < pointCount; i++) {
+        const x = 50 + Math.random() * (canvas.width - 100);
+        const y = 50 + Math.random() * (canvas.height - 100);
+        points.push({x, y});
     }
     
-    initialize() {
-        const n = this.cities.length;
+    drawPoints();
+});
+
+runBtn.addEventListener('click', async () => {
+    if (isRunning || points.length < 2) return;
+    
+    isRunning = true;
+    runBtn.disabled = true;
+    
+    initializePheromones();
+    
+    const iterations = parseInt(iterationsInput.value);
+    
+    for (let i = 0; i < iterations; i++) {
+        currentIteration = i + 1;
+        updateResults();
         
-        // Инициализация матрицы расстояний
-        this.distances = new Array(n);
-        for (let i = 0; i < n; i++) {
-            this.distances[i] = new Array(n);
-            for (let j = 0; j < n; j++) {
-                const dx = this.cities[i].x - this.cities[j].x;
-                const dy = this.cities[i].y - this.cities[j].y;
-                this.distances[i][j] = Math.sqrt(dx * dx + dy * dy);
+        const paths = [];
+        const lengths = [];
+        
+        // Каждый муравей строит путь
+        for (let ant = 0; ant < ANT_COUNT; ant++) {
+            const {path, length} = buildAntPath();
+            paths.push(path);
+            lengths.push(length);
+            
+            if (length < bestLength) {
+                bestLength = length;
+                bestPath = [...path];
+                drawPoints();
+                drawPath(bestPath, 'red');
             }
         }
         
-        // Инициализация феромонов
-        this.pheromone = new Array(n);
-        const initialPheromone = 1 / n;
-        for (let i = 0; i < n; i++) {
-            this.pheromone[i] = new Array(n).fill(initialPheromone);
-        }
+        // Обновление феромонов
+        updatePheromones(paths, lengths);
+        
+        // Небольшая задержка для визуализации
+        await new Promise(resolve => setTimeout(resolve, 100));
     }
     
-    *run() {
-        for (let iter = 0; iter < this.iterations; iter++) {
-            const allPaths = [];
-            const allLengths = [];
-            
-            // Каждый муравей строит путь
-            for (let ant = 0; ant < this.antCount; ant++) {
-                const { path, length } = this.buildPath();
-                allPaths.push(path);
-                allLengths.push(length);
-                
-                // Обновляем лучший путь
-                if (length < this.bestPathLength) {
-                    this.bestPathLength = length;
-                    this.bestPath = [...path];
-                }
-            }
-            
-            // Обновление феромонов
-            this.updatePheromones(allPaths, allLengths);
-            
-            // Возвращаем информацию о текущей итерации
-            yield {
-                iteration: iter + 1,
-                bestPath: this.bestPath,
-                bestPathLength: this.bestPathLength,
-                pheromone: this.pheromone
-            };
-        }
-    }
+    isRunning = false;
+    runBtn.disabled = false;
+    drawPoints();
+    drawPath(bestPath, 'red');
+});
+
+// Функции алгоритма
+
+function initializePheromones() {
+    const n = points.length;
+    pheromones = Array(n).fill().map(() => Array(n).fill(1));
+    bestPath = [];
+    bestLength = Infinity;
+    currentIteration = 0;
+}
+
+function buildAntPath() {
+    const n = points.length;
     
-    buildPath() {
-        const n = this.cities.length;
-        const startCity = Math.floor(Math.random() * n);
-        const visited = new Array(n).fill(false);
-        const path = [startCity];
-        visited[startCity] = true;
-        let length = 0;
-        
-        for (let i = 0; i < n - 1; i++) {
-            const currentCity = path[path.length - 1];
-            const nextCity = this.selectNextCity(currentCity, visited);
-            path.push(nextCity);
-            visited[nextCity] = true;
-            length += this.distances[currentCity][nextCity];
-        }
-        
-        // Замыкаем путь
-        length += this.distances[path[path.length - 1]][path[0]];
-        
-        return { path, length };
-    }
+    const visited = new Set();
+    const path = [];
+    let length = 0;
     
-    selectNextCity(currentCity, visited) {
-        const n = this.cities.length;
+    // Начинаем со случайного города
+    let current = Math.floor(Math.random() * n);
+    path.push(current);
+    visited.add(current);
+    
+    while (visited.size < n) {
+        // Вычисляем вероятности перехода в каждый из непосещенных городов
         const probabilities = [];
         let total = 0;
         
         for (let i = 0; i < n; i++) {
-            if (!visited[i] && currentCity !== i) {
-                const pheromone = Math.pow(this.pheromone[currentCity][i], this.alpha);
-                const distance = Math.pow(1 / Math.max(this.distances[currentCity][i], 0.0001), this.beta);
-                const value = pheromone * distance;
-                probabilities.push({ city: i, value });
-                total += value;
+            if (!visited.has(i)) {
+                const pheromone = Math.pow(pheromones[current][i], ALPHA);
+                const distance = 1 / getDistance(points[current], points[i]);
+                const attractiveness = pheromone * Math.pow(distance, BETA);
+                probabilities.push({city: i, prob: attractiveness});
+                total += attractiveness;
+            } else {
+                probabilities.push({city: i, prob: 0});
             }
         }
         
-        // Если все вероятности нулевые (может случиться на первых итерациях)
-        if (total === 0) {
-            const unvisited = [];
+        // Нормализуем вероятности
+        for (let i = 0; i < probabilities.length; i++) {
+            probabilities[i].prob /= total;
+        }
+        
+        // Выбираем следующий город на основе вероятностей
+        let rand = Math.random();
+        let nextCity = -1;
+        
+        for (let i = 0; i < probabilities.length; i++) {
+            rand -= probabilities[i].prob;
+            if (rand <= 0) {
+                nextCity = probabilities[i].city;
+                break;
+            }
+        }
+        
+        // Если из-за ошибок округления следующий город не выбран, берем первый доступный
+        if (nextCity === -1) {
             for (let i = 0; i < n; i++) {
-                if (!visited[i] && currentCity !== i) {
-                    unvisited.push(i);
+                if (!visited.has(i)) {
+                    nextCity = i;
+                    break;
                 }
             }
-            return unvisited[Math.floor(Math.random() * unvisited.length)];
         }
         
-        // Выбор следующего города по вероятности
-        let random = Math.random() * total;
-        for (const item of probabilities) {
-            if (random < item.value) {
-                return item.city;
-            }
-            random -= item.value;
-        }
-        
-        return probabilities[probabilities.length - 1].city;
+        length += getDistance(points[current], points[nextCity]);
+        path.push(nextCity);
+        visited.add(nextCity);
+        current = nextCity;
     }
     
-    updatePheromones(allPaths, allLengths) {
-        const n = this.cities.length;
-        
-        // Испарение феромонов
-        for (let i = 0; i < n; i++) {
-            for (let j = 0; j < n; j++) {
-                this.pheromone[i][j] *= (1 - this.evaporation);
-                // Минимальное значение феромона
-                this.pheromone[i][j] = Math.max(this.pheromone[i][j], 0.0001);
-            }
+    // Возвращаемся в начальный город
+    length += getDistance(points[current], points[path[0]]);
+    path.push(path[0]);
+    
+    return {path, length};
+}
+
+function updatePheromones(paths, lengths) {
+    const n = points.length;
+    
+    // Испарение феромонов
+    for (let i = 0; i < n; i++) {
+        for (let j = 0; j < n; j++) {
+            pheromones[i][j] *= (1 - EVAPORATION);
         }
+    }
+    
+    // Добавление новых феромонов
+    for (let ant = 0; ant < paths.length; ant++) {
+        const path = paths[ant];
+        const deltaPheromone = Q / lengths[ant];
         
-        // Добавление нового феромона
-        for (let ant = 0; ant < allPaths.length; ant++) {
-            const path = allPaths[ant];
-            const length = allLengths[ant];
-            const deltaPheromone = this.q / length;
-            
-            for (let i = 0; i < path.length - 1; i++) {
-                const from = path[i];
-                const to = path[i + 1];
-                this.pheromone[from][to] += deltaPheromone;
-                this.pheromone[to][from] += deltaPheromone;
-            }
-            
-            // Замыкаем путь
-            const from = path[path.length - 1];
-            const to = path[0];
-            this.pheromone[from][to] += deltaPheromone;
-            this.pheromone[to][from] += deltaPheromone;
+        for (let i = 0; i < path.length - 1; i++) {
+            const from = path[i];
+            const to = path[i+1];
+            pheromones[from][to] += deltaPheromone;
+            pheromones[to][from] += deltaPheromone; // Феромоны симметричны
         }
     }
 }
 
-// Основной код приложения
-document.addEventListener('DOMContentLoaded', () => {
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
-    const clearBtn = document.getElementById('clear');
-    const runBtn = document.getElementById('run');
-    const randomBtn = document.getElementById('random');
-    const bestPathLengthEl = document.getElementById('bestPathLength');
-    const currentIterationEl = document.getElementById('currentIteration');
-    const cityCountEl = document.getElementById('cityCount');
+// Вспомогательные функции
+
+function getDistance(p1, p2) {
+    return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
+}
+
+function drawPoints() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     
-    // Размеры canvas
-    canvas.width = 800;
-    canvas.height = 500;
-    
-    // Точки (города)
-    let cities = [];
-    let isRunning = false;
-    let animationId = null;
-    let currentIterations = 0;
-    let totalIterations = 0;
-    
-    // Обработчики событий
-    canvas.addEventListener('click', (e) => {
-        if (isRunning) return;
-        
-        const rect = canvas.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        
-        // Проверяем, что точка не слишком близко к краю
-        if (x < 10 || x > canvas.width - 10 || y < 10 || y > canvas.height - 10) {
-            return;
-        }
-        
-        // Проверяем, что точка не слишком близко к уже существующей
-        const tooClose = cities.some(city => {
-            const dx = city.x - x;
-            const dy = city.y - y;
-            return Math.sqrt(dx * dx + dy * dy) < 15;
-        });
-        
-        if (!tooClose) {
-            cities.push({ x, y });
-            drawCities();
-            updateCityCount();
-        }
-    });
-    
-    clearBtn.addEventListener('click', () => {
-        if (isRunning) {
-            cancelAnimationFrame(animationId);
-            isRunning = false;
-            runBtn.textContent = 'Запустить алгоритм';
-            runBtn.disabled = false;
-            randomBtn.disabled = false;
-        }
-        
-        cities = [];
-        drawCities();
-        bestPathLengthEl.textContent = 'Лучший путь: не найден';
-        currentIterationEl.textContent = 'Итерация: 0/0';
-        updateCityCount();
-    });
-    
-    randomBtn.addEventListener('click', () => {
-        if (isRunning) return;
-        
-        cities = [];
-        const margin = 30;
-        const minDistance = 40;
-        
-        for (let i = 0; i < 10; i++) {
-            let attempts = 0;
-            let x, y, valid;
-            
-            do {
-                valid = true;
-                x = margin + Math.random() * (canvas.width - 2 * margin);
-                y = margin + Math.random() * (canvas.height - 2 * margin);
-                
-                // Проверяем расстояние до других точек
-                for (const city of cities) {
-                    const dx = city.x - x;
-                    const dy = city.y - y;
-                    if (Math.sqrt(dx * dx + dy * dy) < minDistance) {
-                        valid = false;
-                        break;
-                    }
-                }
-                
-                attempts++;
-                if (attempts > 100) break; // На всякий случай ограничим попытки
-            } while (!valid && attempts <= 100);
-            
-            if (valid) {
-                cities.push({ x, y });
-            }
-        }
-        
-        drawCities();
-        updateCityCount();
-    });
-    
-    runBtn.addEventListener('click', async () => {
-        if (isRunning) {
-            cancelAnimationFrame(animationId);
-            isRunning = false;
-            runBtn.textContent = 'Запустить алгоритм';
-            randomBtn.disabled = false;
-            return;
-        }
-        
-        if (cities.length < 3) {
-            alert('Добавьте хотя бы 3 города');
-            return;
-        }
-        
-        isRunning = true;
-        runBtn.textContent = 'Остановить';
-        randomBtn.disabled = true;
-        
-        const params = {
-            antCount: parseInt(document.getElementById('antCount').value),
-            iterations: parseInt(document.getElementById('iterations').value),
-            alpha: parseFloat(document.getElementById('alpha').value),
-            beta: parseFloat(document.getElementById('beta').value),
-            evaporation: parseFloat(document.getElementById('evaporation').value),
-            q: 100
-        };
-        
-        totalIterations = params.iterations;
-        currentIterations = 0;
-        currentIterationEl.textContent = `Итерация: 0/${totalIterations}`;
-        
-        const aco = new AntColonyOptimizer(cities, params);
-        const generator = aco.run();
-        
-        const runAnimation = () => {
-            const result = generator.next();
-            
-            if (result.done || !isRunning) {
-                isRunning = false;
-                runBtn.textContent = 'Запустить алгоритм';
-                randomBtn.disabled = false;
-                return;
-            }
-            
-            const { iteration, bestPath, bestPathLength } = result.value;
-            currentIterations = iteration;
-            
-            // Обновляем информацию
-            bestPathLengthEl.textContent = `Лучший путь: ${bestPathLength.toFixed(2)}`;
-            currentIterationEl.textContent = `Итерация: ${iteration}/${totalIterations}`;
-            
-            // Рисуем лучший путь
-            drawCities();
-            drawPath(bestPath, '#e74c3c', 3);
-            
-            animationId = requestAnimationFrame(runAnimation);
-        };
-        
-        animationId = requestAnimationFrame(runAnimation);
-    });
-    
-    // Функции отрисовки
-    function drawCities() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        // Рисуем точки
-        ctx.fillStyle = '#2c3e50';
-        for (const city of cities) {
-            ctx.beginPath();
-            ctx.arc(city.x, city.y, 6, 0, Math.PI * 2);
-            ctx.fill();
-            
-            // Белая обводка для лучшей видимости
-            ctx.lineWidth = 2;
-            ctx.strokeStyle = 'white';
-            ctx.stroke();
-        }
-    }
-    
-    function drawPath(path, color = '#3498db', width = 2) {
-        if (path.length < 2) return;
-        
-        ctx.strokeStyle = color;
-        ctx.lineWidth = width;
-        ctx.lineJoin = 'round';
-        ctx.lineCap = 'round';
+    // Рисуем точки
+    ctx.fillStyle = 'blue';
+    for (const point of points) {
         ctx.beginPath();
-        
-        // Рисуем основной путь
-        ctx.moveTo(cities[path[0]].x, cities[path[0]].y);
-        for (let i = 1; i < path.length; i++) {
-            ctx.lineTo(cities[path[i]].x, cities[path[i]].y);
-        }
-        
-        // Замыкаем путь
-        ctx.lineTo(cities[path[0]].x, cities[path[0]].y);
-        ctx.stroke();
-        
-        // Рисуем более тонкие линии к центрам точек
-        ctx.lineWidth = 1;
-        for (let i = 0; i < path.length; i++) {
-            ctx.beginPath();
-            ctx.moveTo(cities[path[i]].x, cities[path[i]].y);
-            const next = i === path.length - 1 ? path[0] : path[i + 1];
-            ctx.lineTo(cities[next].x, cities[next].y);
-            ctx.stroke();
-        }
+        ctx.arc(point.x, point.y, 5, 0, Math.PI * 2);
+        ctx.fill();
+    }
+}
+
+function drawPath(path, color) {
+    if (path.length < 2) return;
+    
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(points[path[0]].x, points[path[0]].y);
+    
+    for (let i = 1; i < path.length; i++) {
+        ctx.lineTo(points[path[i]].x, points[path[i]].y);
     }
     
-    function updateCityCount() {
-        cityCountEl.textContent = `Городов: ${cities.length}`;
-        runBtn.disabled = cities.length < 3;
-    }
+    ctx.stroke();
     
-    // Инициализация
-    drawCities();
-    updateCityCount();
-});
+    // Подписываем порядок посещения городов
+    ctx.fillStyle = 'black';
+    ctx.font = '12px Arial';
+    for (let i = 0; i < path.length - 1; i++) {
+        const point = points[path[i]];
+        ctx.fillText(i+1, point.x + 8, point.y + 8);
+    }
+}
+
+function updateResults() {
+    currentIterationSpan.textContent = currentIteration;
+    
+    if (bestPath.length > 0) {
+        bestLengthSpan.textContent = bestLength.toFixed(2);
+        bestPathSpan.textContent = bestPath.slice(0, -1).map(i => i+1).join(' → ') + ' → 1';
+    } else {
+        bestLengthSpan.textContent = '-';
+        bestPathSpan.textContent = '-';
+    }
+}
+
+// Инициализация
+drawPoints();
