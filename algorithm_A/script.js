@@ -23,7 +23,7 @@ function generateGrid() {
     startCell = null;
     endCell = null;
 
-    let size = parseInt(document.getElementById("input-size").value);
+    const size = parseInt(document.getElementById("input-size").value);
 
     if (size <= 0) {
         alert("Please enter a positive number");
@@ -31,7 +31,7 @@ function generateGrid() {
     }
 
     document.documentElement.style.setProperty("--size", size);
-    let container = document.getElementById("grid");
+    const container = document.getElementById("grid");
     container.innerHTML = "";
 
     for (let x = 0; x < size; x++) {
@@ -63,15 +63,15 @@ function generateGrid() {
 }
 
 function addWalls(x, y, walls, size, inMaze) {
-    let directions = [
+    const directions = [
         [0, 2],
         [2, 0],
         [0, -2],
         [-2, 0],
     ];
     for (let [dx, dy] of directions) {
-        let newx = x + dx;
-        let newy = y + dy;
+        const newx = x + dx;
+        const newy = y + dy;
         if (newx >= 0 && newx < size && newy >= 0 && newy < size && !inMaze[newx][newy]) {
             walls.push({ x: newx, y: newy, px: x, py: y });
         }
@@ -95,12 +95,12 @@ function generateMaze(size) {
     addWalls(x, y, walls, size, inMaze);
 
     while (walls.length > 0) {
-        let index = Math.floor(Math.random() * walls.length);
-        let { x, y, px, py } = walls.splice(index, 1)[0];
+        const index = Math.floor(Math.random() * walls.length);
+        const { x, y, px, py } = walls.splice(index, 1)[0];
 
         if (!inMaze[x][y]) {
-            let wallX = (x + px) / 2;
-            let wallY = (y + py) / 2;
+            const wallX = (x + px) / 2;
+            const wallY = (y + py) / 2;
 
             inMaze[x][y] = true;
             grid[x][y].classList.remove("wall");
@@ -178,7 +178,7 @@ function handleDoubleClick(cell) {
 }
 
 function resetPath() {
-    let size = parseInt(document.getElementById("input-size").value);
+    const size = parseInt(document.getElementById("input-size").value);
     for (let x = 0; x < size; x++) {
         for (let y = 0; y < size; y++) {
             if (grid[x][y].style.backgroundColor !== "black" && 
@@ -205,7 +205,7 @@ function buildPath(node) {
 }
 
 function getAdjacentNodes(node, grid, size, nodes) {
-    let directions = [
+    const directions = [
         [0, 1],
         [1, 0],
         [0, -1],
@@ -214,11 +214,11 @@ function getAdjacentNodes(node, grid, size, nodes) {
     let adjacentNodes = [];
 
     for (let [dx, dy] of directions) {
-        let newX = node.x + dx;
-        let newY = node.y + dy;
+        const newX = node.x + dx;
+        const newY = node.y + dy;
 
         if (newX >= 0 && newX < size && newY >= 0 && newY < size) {
-            let adjacentCell = grid[newX][newY];
+            const adjacentCell = grid[newX][newY];
             if (!adjacentCell.classList.contains("wall")) {
                 adjacentNodes.push(nodes[newX][newY]);
             }
@@ -260,8 +260,8 @@ async function findPath(startNode, goalNode, grid, size) {
         }
     }
 
-    let start = nodes[startNode.x][startNode.y];
-    let goal = nodes[goalNode.x][goalNode.y];
+    const start = nodes[startNode.x][startNode.y];
+    const goal = nodes[goalNode.x][goalNode.y];
     start.cost = 0;
 
     let reachable = [start];
@@ -325,9 +325,9 @@ async function runAStar() {
     }
 
     resetPath();
-    let size = parseInt(document.getElementById("input-size").value);
-    let start = new Node(startCell.dataset.row, startCell.dataset.col);
-    let end = new Node(endCell.dataset.row, endCell.dataset.col);
+    const size = parseInt(document.getElementById("input-size").value);
+    const start = new Node(startCell.dataset.row, startCell.dataset.col);
+    const end = new Node(endCell.dataset.row, endCell.dataset.col);
 
     isDrowingNow = true;
 
